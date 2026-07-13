@@ -68,4 +68,22 @@ public class Employee {
                 '}';
     }
 
+    public void celebrateBirthday() {
+        this.age++;
+        System.out.println("Happy Birthday to " + this.name + ". You turned " + this.age + " years.");
+    }
+
+    public void increaseSalary(double amount) {
+        if (amount > 0) {
+            this.salary += amount;
+        }
+    }
+
+    public void transferDepartment(Department department) {
+        if (department != null) {
+            this.department = department;
+        }
+    }
+
+
 }

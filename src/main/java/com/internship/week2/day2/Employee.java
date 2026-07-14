@@ -1,6 +1,6 @@
 package com.internship.week2.day2;
 
-public class Employee extends Person {
+public class Employee extends Person implements Payable{
 
     private double salary;
     private String department;
@@ -32,6 +32,11 @@ public class Employee extends Person {
     }
 
     double calculatePay(){
-        return getSalary();
+        return getSalary() - getSalary() * CompanyConstants.TAX_RATE;
+    }
+
+    @Override
+    public void processPayment() {
+        System.out.println("Paying " + this.getName() + ": " + this.calculatePay());
     }
 }

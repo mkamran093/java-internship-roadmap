@@ -1,6 +1,6 @@
-package com.internship.week2.day3.module5;
+package com.internship.week2.day3.module6;
 
-public class Student implements Comparable<Student> {
+public class Student {
 
     private int rollNo;
     private String name;
@@ -34,11 +34,6 @@ public class Student implements Comparable<Student> {
 
     public void setCgpa(double cgpa) {
         this.cgpa = cgpa;
-    }
-
-    @Override
-    public int compareTo(Student student) {
-        return Integer.compare(this.rollNo, student.rollNo);
     }
 
     @Override

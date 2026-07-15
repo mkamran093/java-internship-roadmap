@@ -1,0 +1,20 @@
+	Best Collection	Why
+Situation: Student attendance list
+Best Collection: TreeSet
+Why: It can prevent duplicate entries and most importantly it can sort student based on any parameter.
+
+Situation: Unique CNIC numbers
+Best Collection: HashSet
+Why: We have a final parameter(cnic) which will never be changed. So we can use it for hashCode and avoiding duplicates.
+
+Situation: Waiting queue in hospital
+Best Collection: Queue
+Why:
+
+Situation: Dictionary sorted alphabetically
+Best Collection: TreeSet
+Why: TreeSet provides us sorting
+
+Situation: Browser history
+Best Collection: LinkedList
+Why: constantly adding to the end(tail) and can be deleted.

@@ -40,11 +40,11 @@ public class Student {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Student student = (Student) o;
-        return this.rollNo == student.rollNo;
+        return this.name.equals(student.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(name);
+        return Objects.hashCode(rollNo);
     }
 }

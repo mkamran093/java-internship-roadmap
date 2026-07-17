@@ -1,6 +1,7 @@
 package com.internship.week2.day5;
 
 import java.io.FileReader;
+import java.io.IOException;
 
 public class ErrorClass {
 
@@ -23,6 +24,22 @@ public class ErrorClass {
         }
     }
 
+    public static void methodC() throws IOException {
+        throw new IOException("File Missing");
+    }
+
+    public static void methodB() throws IOException {
+        methodC();
+    }
+
+    public static void methodA() {
+        try {
+            methodB();
+        } catch (IOException e) {
+            System.out.println("Recovered in methodA");
+        }
+    }
+
     public static void main(String args[]) {
 
 //        System.out.println(10/0);
@@ -37,6 +54,6 @@ public class ErrorClass {
 
 //        FileReader fileReader = new FileReader("abc.txt");
 
-        A();
+        methodA();
     }
 }

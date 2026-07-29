@@ -2,12 +2,11 @@ package com.internship.week4.day3.RaceCondition;
 
 class Counter {
 
-    int count = 0;
+    volatile int count = 0;
 
-    synchronized public void increment() {
+    public void increment() {
         count++;
     }
-
 }
 
 public class Main {
@@ -15,6 +14,7 @@ public class Main {
     public static void main(String[] args)
             throws InterruptedException {
 
+        long start = System.currentTimeMillis();
         Counter counter = new Counter();
 
         Thread t1 = new Thread(new IncrementTask(counter));
@@ -27,7 +27,8 @@ public class Main {
         t2.join();
 
         System.out.println(counter.count);
-
+        long end = System.currentTimeMillis();
+        System.out.println("Time: " + (end - start) + " ms");
     }
 
 }

@@ -15,4 +15,8 @@ public class Worker extends Thread {
         }
         System.out.println("Worker Stopped");
     }
+
+    public static void main(String[] args) {
+
+    }
 }

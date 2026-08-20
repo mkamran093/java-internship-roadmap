@@ -21,7 +21,20 @@ public class Book {
         this.isAvailable = isAvailable;
     }
 
+    public Book(String title, String isbn, String author, boolean isAvailable) {
+        this.title = title;
+        this.isbn = isbn;
+        this.author = author;
+        this.isAvailable = isAvailable;
+    }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;

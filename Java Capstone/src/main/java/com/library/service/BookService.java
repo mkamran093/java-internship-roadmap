@@ -1,5 +1,8 @@
 package com.library.service;
 
+import com.library.exception.BookNotAvailableException;
+import com.library.exception.BookNotFoundException;
+import com.library.exception.DuplicateBookException;
 import com.library.model.Book;
 import com.library.repository.BookRepository;
 //import com.library.exception.BookNotFoundException;
@@ -8,7 +11,9 @@ import com.library.repository.BookRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class BookService {
 
@@ -22,67 +27,70 @@ public class BookService {
     }
 
     public Book addBook(Book book) {
-        // TODO: Implementation
-        // 1. Check if ISBN already exists
-        // 2. If exists, throw DuplicateBookException
-        // 3. Save the book
-        // 4. Log the operation
-        // 5. Return saved book
-        return null; // Remove this
+        if (bookRepository.findByIsbn(book.getIsbn()).isPresent()) {
+            throw new DuplicateBookException("Book with ISBN " + book.getIsbn() + " already exists");
+        }
+        return bookRepository.save(book);
     }
 
     public Book getBookById(Long id) {
-        // TODO: Implementation
-        // 1. Find by ID
-        // 2. If not found, throw BookNotFoundException
-        // 3. Return the book
-        return null; // Remove this
+        return bookRepository.findById(id).
+                orElseThrow(() -> new BookNotFoundException("Book with ID " + id + " not found"));
     }
 
     public List<Book> getAllBooks() {
-        // TODO: Implementation
-        // 1. Get all books from repository
-        // 2. Log operation
-        // 3. Return list
-        return null; // Remove this
+        return bookRepository.findAll();
     }
 
     public Book updateBook(Book book) {
-        // TODO: Implementation
-        // 1. Check if book exists
-        // 2. Check if ISBN is changing and duplicates
-        // 3. Update the book
-        // 4. Log operation
-        // 5. Return updated book
-        return null; // Remove this
+        Book oldBook = getBookById(book.getId());
+
+        // Check if ISBN is being changed
+        if (!book.getIsbn().equals(oldBook.getIsbn())) {
+            // Check if new ISBN already exists in another book
+            bookRepository.findByIsbn(book.getIsbn())
+                    .ifPresent(existingBook -> {
+                        throw new DuplicateBookException("Book with ISBN " + book.getIsbn() + " already exists");
+                    });
+            oldBook.setIsbn(book.getIsbn());  // Update the ISBN
+        }
+
+        // Update other fields
+        oldBook.setTitle(book.getTitle());
+        oldBook.setAuthor(book.getAuthor());
+        oldBook.setAvailable(book.isAvailable());
+
+        Book updatedBook = bookRepository.save(oldBook);
+        log.info("Book updated: {}", updatedBook.getTitle());
+        return updatedBook;
     }
 
     public void deleteBook(Long id) {
-        // TODO: Implementation
-        // 1. Check if book exists
-        // 2. Delete the book
-        // 3. Log operation
+        getBookById(id);  // Ensure book exists
+        bookRepository.deleteById(id);
+        log.info("Book deleted with ID: {}", id);
     }
 
     public Book borrowBook(Long id) {
-        // TODO: Implementation
-        // 1. Get the book
-        // 2. Check if available
-        // 3. Set available to false
-        // 4. Save the book
-        // 5. Log operation
-        // 6. Return updated book
-        return null; // Remove this
+        Book book = getBookById(id);
+        if(!book.isAvailable()) {
+            throw new BookNotAvailableException("Book with ID " + id + " is currently borrowed");
+        }
+        book.setAvailable(false);
+        log.info("Book borrowed");
+        return bookRepository.save(book);
     }
 
     public Book returnBook(Long id) {
-        // TODO: Implementation
-        // 1. Get the book
-        // 2. Check if not available (borrowed)
-        // 3. Set available to true
-        // 4. Save the book
-        // 5. Log operation
-        // 6. Return updated book
-        return null; // Remove this
+        Book book = getBookById(id);
+
+        if (book.isAvailable()) {
+            throw new IllegalStateException("Book with ID " + id + " is already available");
+        }
+
+        book.setAvailable(true);
+        Book returnedBook = bookRepository.save(book);
+        log.info("Book returned: {}", returnedBook.getTitle());
+        return returnedBook;
     }
 }

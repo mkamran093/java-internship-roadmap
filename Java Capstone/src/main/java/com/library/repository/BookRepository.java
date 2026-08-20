@@ -112,7 +112,7 @@ public class BookRepository {
         return Optional.empty(); // Remove this
     }
 
-    public ArrayList<Book> findAll() {
+    public List<Book> findAll() {
         String sql = "SELECT * FROM books";
         ArrayList<Book> books = new ArrayList<>();
         try(Connection connection = getConnection();

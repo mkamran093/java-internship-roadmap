@@ -6,7 +6,7 @@ public class Main {
 
     public static void main(String args[]) {
 
-        TreeSet<Student> students = new TreeSet<>(new RollNoComparator());
+        TreeSet<Student> students = new TreeSet<>(new NameComparator());
 
         students.add(new Student(3, "Kamran", 3.21));
         students.add(new Student(1, "Ali", 3.85));
